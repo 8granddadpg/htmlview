@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8GrandDads HTML View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: #fff;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .input-area, .output-area {
+            position: relative;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            padding: 20px;
+            background-color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+            background-color: #222;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            padding: 15px;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        textarea:focus {
+            background-color: #444;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #6a1b9a;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #4a148c;
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        #output {
+            padding: 20px;
+            border-radius: 12px;
+            background: #333;
+            min-height: 100px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #fff;
+            overflow: auto;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: #6a1b9a;
+            color: white;
+            padding: 20px;
+            border-radius: 0 20px 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .theme-button {
+            padding: 10px;
+            width: 100%;
+            margin: 5px 0;
+            background-color: #4a148c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .theme-button:hover {
+            background-color: #6a1b9a;
+        }
+
+        .sidebar.active {
+            width: 300px;
+        }
+
+        .sidebar .theme-button.active {
+            background-color: #9c1eac;
+        }
+
+        .theme-description {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #fff;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+                margin-left: 0;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Themes</h2>
+        <button class="theme-button" onclick="changeTheme('purple')">Purple Theme</button>
+        <button class="theme-button" onclick="changeTheme('rose')">Rose Theme</button>
+        <button class="theme-button" onclick="changeTheme('aqua')">Aqua Theme</button>
+        <button class="theme-button" onclick="changeTheme('ocean')">Ocean Theme</button>
+        <button class="theme-button" onclick="changeTheme('blue')">Blue Theme</button>
+        <button class="theme-button" onclick="changeTheme('green')">Green Theme</button>
+        <button class="theme-button" onclick="changeTheme('red')">Red Theme</button>
+        <button class="theme-button" onclick="changeTheme('sunset')">Sunset Theme</button>
+        <button class="theme-button" onclick="changeTheme('forest')">Forest Theme</button>
+        <button class="theme-button" onclick="changeTheme('night')">Night Theme</button>
+        <div class="theme-description">
+            yes i do know that i cant code properly.
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>8GrandDads HTML View</h1>
+        <div class="input-area">
+            <textarea id="htmlInput" placeholder="Input HTML here."></textarea>
+        </div>
+        <button onclick="previewHTML()">View</button>
+        <button onclick="viewInNewTab()">View in New Tab</button> <!-- New Button -->
+        <div class="output-area">
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <script>
+        const themeColors = {
+            purple: {
+                background: 'linear-gradient(135deg, #6a1b9a, #9c1eac)',
+                buttonBackground: '#6a1b9a',
+                buttonHover: '#4a148c',
+            },
+            rose: {
+                background: 'linear-gradient(135deg, #f06292, #e91e63)',
+                buttonBackground: '#f06292',
+                buttonHover: '#d81b60',
+            },
+            aqua: {
+                background: 'linear-gradient(135deg, #00bcd4, #0097a7)',
+                buttonBackground: '#00bcd4',
+                buttonHover: '#00838f',
+            },
+            ocean: {
+                background: 'linear-gradient(135deg, #2c3e50, #34495e)',
+                buttonBackground: '#2c3e50',
+                buttonHover: '#1a242f',
+            },
+            blue: {
+                background: 'linear-gradient(135deg, #1e3c72, #2a5298)',
+                buttonBackground: '#1e3c72',
+                buttonHover: '#1a2568',
+            },
+            green: {
+                background: 'linear-gradient(135deg, #2d9a4f, #28a745)',
+                buttonBackground: '#2d9a4f',
+                buttonHover: '#217738',
+            },
+            red: {
+                background: 'linear-gradient(135deg, #ff6a00, #ff3f00)',
+                buttonBackground: '#ff6a00',
+                buttonHover: '#ff3f00',
+            },
+            sunset: {
+                background: 'linear-gradient(135deg, #ff7e5f, #feb47b)',
+                buttonBackground: '#ff7e5f',
+                buttonHover: '#f05638',
+            },
+            forest: {
+                background: 'linear-gradient(135deg, #2c6e49, #3e8e41)',
+                buttonBackground: '#2c6e49',
+                buttonHover: '#255e33',
+            },
+            night: {
+                background: 'linear-gradient(135deg, #2f3b52, #2c3e50)',
+                buttonBackground: '#2f3b52',
+                buttonHover: '#1a242f',
+            }
+        };
+
+        function changeTheme(theme) {
+            localStorage.setItem('theme', theme);
+            applyTheme(theme);
+        }
+
+        function applyTheme(theme) {
+            const themeData = themeColors[theme];
+            document.body.style.background = themeData.background;
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.style.backgroundColor = themeData.buttonBackground;
+                button.addEventListener('mouseenter', () => button.style.backgroundColor = themeData.buttonHover);
+                button.addEventListener('mouseleave', () => button.style.backgroundColor = themeData.buttonBackground);
+            });
+            const themeButtons = document.querySelectorAll('.theme-button');
+            themeButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.theme-button[onclick="changeTheme('${theme}')"]`).classList.add('active');
+        }
+
+        function previewHTML() {
+            const htmlCode = document.getElementById("htmlInput").value;
+            document.getElementById("output").innerHTML = htmlCode;
+        }
+
+        function viewInNewTab() {
+            const htmlCode = document.getElementById("htmlInput").value;
+            const newWindow = window.open();
+            newWindow.document.write(htmlCode);
+        }
+
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme') || 'purple';
+            applyTheme(savedTheme);
+        };
+    </script>
+
+</body>
+</html>
