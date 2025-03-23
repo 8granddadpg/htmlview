@@ -203,10 +203,14 @@
         </div>
         <button onclick="previewHTML()">View</button>
         <button onclick="viewInNewTab()">View in New Tab</button> <!-- New Button -->
+        <button onclick="importHTML()">Import</button> <!-- New Import Button -->
         <div class="output-area">
             <div id="output"></div>
         </div>
     </div>
+
+    <!-- File input to import HTML or TXT code -->
+    <input type="file" id="fileInput" style="display: none;" accept=".html, .txt" onchange="handleFileSelect(event)" />
 
     <script>
         const themeColors = {
@@ -294,8 +298,30 @@
             newWindow.document.write(htmlCode);
         }
 
+        function importHTML() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const fileContent = e.target.result;
+                    if (file.type === "text/html") {
+                        document.getElementById('htmlInput').value = fileContent;
+                    } else if (file.type === "text/plain") {
+                        document.getElementById('htmlInput').value = fileContent;
+                    } else {
+                        alert('Invalid file type. Please use HTML or TXT files.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
         window.onload = () => {
-            const savedTheme = localStorage.getItem('theme') || 'purple';
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'purple');
             applyTheme(savedTheme);
         };
     </script>
